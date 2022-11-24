@@ -40,6 +40,7 @@ export default function SignInScreen({ setToken }) {
             placeholder="email"
             onChangeText={(newText) => setEmail(newText)}
             defaultValue={email}
+            autoCapitalize="none"
           />
           <TextInput
             style={styles.inputSignin}
@@ -47,6 +48,7 @@ export default function SignInScreen({ setToken }) {
             secureTextEntry={true}
             onChangeText={(newText) => setPassword(newText)}
             defaultValue={password}
+            autoCapitalize="none"
           />
         </KeyboardAwareScrollView>
 
@@ -66,7 +68,7 @@ export default function SignInScreen({ setToken }) {
                       password,
                     }
                   );
-                  console.log(response.data.token);
+                  // console.log(response.data.token);
 
                   const userToken = response.data.token;
                   setToken(userToken);

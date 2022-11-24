@@ -1,3 +1,5 @@
+import { Dimensions } from "react-native";
+
 export default {
   // page Sign Up
   containerLogoAirbnb: {
@@ -11,16 +13,6 @@ export default {
     alignItems: "center",
     marginVertical: 30,
   },
-
-  // containerForm: {
-  //   borderColor: "green",
-  //   borderWidth: 0.8,
-  // },
-
-  // containerButton: {
-  //   borderColor: "blue",
-  //   borderWidth: 0.8,
-  // },
 
   textSignin: {
     color: "#565555",
@@ -92,5 +84,105 @@ export default {
   error: {
     textAlign: "center",
     color: "red",
+  },
+
+  // page Home
+  homeImage: {
+    width: "100%",
+    height: 200,
+  },
+
+  homeLogo: {
+    alignItems: "center",
+    marginVertical: 15,
+  },
+
+  logoAirbnbHome: {
+    width: 30,
+    height: 30,
+    alignItems: "center",
+  },
+
+  offerHome: {
+    // borderWidth: 2,
+    // borderColor: "red",
+    margin: 10,
+    paddingVertical: 20,
+    borderBottomWidth: 0.8,
+    borderBottomColor: "#d3d3d3",
+  },
+
+  homePrice: {
+    textAlign: "center",
+    fontSize: 20,
+    width: "25%",
+    color: "white",
+    backgroundColor: "black",
+    padding: 15,
+    position: "absolute",
+    top: 155,
+  },
+
+  homeTitle: {
+    width: "85%",
+    fontSize: 20,
+  },
+
+  avatar: {
+    width: 70,
+    height: 70,
+    borderRadius: "50%",
+  },
+
+  titleAvatar: {
+    marginTop: 10,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "end",
+  },
+
+  homeStars: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginVertical: 15,
+  },
+
+  homeReview: {
+    marginHorizontal: 5,
+    color: "#afafaf",
+    fontSize: 12,
+  },
+
+  activity: {
+    flex: 1,
+  },
+
+  // page ROOM
+  offerRoom: {
+    margin: 10,
+  },
+
+  roomPrice: {
+    textAlign: "center",
+    fontSize: 20,
+    width: "25%",
+    color: "white",
+    backgroundColor: "black",
+    padding: 15,
+    position: "absolute",
+    top: 135,
+  },
+
+  // page Around me
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
+  map: {
+    width: Dimensions.get("window").width,
+    height: Dimensions.get("window").height,
   },
 };

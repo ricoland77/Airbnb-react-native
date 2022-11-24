@@ -10,6 +10,9 @@ import SignInScreen from "./containers/SignInScreen";
 import SignUpScreen from "./containers/SignUpScreen";
 import SettingsScreen from "./containers/SettingsScreen";
 import SplashScreen from "./containers/SplashScreen";
+import RoomScreen from "./containers/RoomScreen";
+import AroundmeScreen from "./containers/AroundmeScreen";
+import { TouchableOpacity, Image } from "react-native";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -88,11 +91,36 @@ export default function App() {
                         name="Home"
                         options={{
                           title: "My App",
-                          headerStyle: { backgroundColor: "red" },
+                          headerStyle: { backgroundColor: "lightskyblue" },
                           headerTitleStyle: { color: "white" },
                         }}
                       >
                         {() => <HomeScreen />}
+                      </Stack.Screen>
+
+                      <Stack.Screen
+                        name="Room"
+                        options={({ navigation }) => ({
+                          title: "My room",
+                          headerStyle: { backgroundColor: "lightskyblue" },
+                          headerTitleStyle: { color: "white" },
+
+                          headerLeft: () => (
+                            <TouchableOpacity
+                              onPress={() => {
+                                navigation.push("Home");
+                              }}
+                            >
+                              <Ionicons
+                                name="arrow-back-circle-outline"
+                                size={30}
+                                color="white"
+                              />
+                            </TouchableOpacity>
+                          ),
+                        })}
+                      >
+                        {() => <RoomScreen />}
                       </Stack.Screen>
 
                       <Stack.Screen
@@ -106,6 +134,36 @@ export default function App() {
                     </Stack.Navigator>
                   )}
                 </Tab.Screen>
+
+                <Tab.Screen
+                  name="TabAround"
+                  options={{
+                    tabBarLabel: "Around me",
+                    tabBarIcon: ({ color, size }) => (
+                      <Ionicons
+                        name={"location-outline"}
+                        size={size}
+                        color={color}
+                      />
+                    ),
+                  }}
+                >
+                  {() => (
+                    <Stack.Navigator>
+                      <Stack.Screen
+                        name="Around"
+                        options={{
+                          title: "Around me",
+                          headerStyle: { backgroundColor: "lightgreen" },
+                          headerTitleStyle: { color: "white" },
+                        }}
+                      >
+                        {() => <AroundmeScreen />}
+                      </Stack.Screen>
+                    </Stack.Navigator>
+                  )}
+                </Tab.Screen>
+
                 <Tab.Screen
                   name="TabSettings"
                   options={{

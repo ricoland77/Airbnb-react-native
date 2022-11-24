@@ -113,10 +113,10 @@ export default function SignUpScreen({ setToken }) {
                       password,
                     }
                   );
-                  console.log(response.data);
 
                   const userToken = response.data.token;
                   setToken(userToken);
+                  // console.log(userToken);
                   alert("Vous êtes connecté");
                 } catch (error) {
                   console.log(error.response.data.error);
