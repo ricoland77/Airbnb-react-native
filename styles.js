@@ -185,4 +185,11 @@ export default {
     width: Dimensions.get("window").width,
     height: Dimensions.get("window").height,
   },
+
+  wrapper: {
+    height: 200,
+  },
+  slide: {
+    height: 200,
+  },
 };

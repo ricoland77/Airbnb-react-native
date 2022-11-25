@@ -12,7 +12,7 @@ import SettingsScreen from "./containers/SettingsScreen";
 import SplashScreen from "./containers/SplashScreen";
 import RoomScreen from "./containers/RoomScreen";
 import AroundmeScreen from "./containers/AroundmeScreen";
-import { TouchableOpacity, Image } from "react-native";
+import { TouchableOpacity } from "react-native";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -100,15 +100,14 @@ export default function App() {
 
                       <Stack.Screen
                         name="Room"
-                        options={({ navigation }) => ({
+                        options={{
                           title: "My room",
                           headerStyle: { backgroundColor: "lightskyblue" },
                           headerTitleStyle: { color: "white" },
-
                           headerLeft: () => (
                             <TouchableOpacity
                               onPress={() => {
-                                navigation.push("Home");
+                                navigation.goBack();
                               }}
                             >
                               <Ionicons
@@ -118,10 +117,9 @@ export default function App() {
                               />
                             </TouchableOpacity>
                           ),
-                        })}
-                      >
-                        {() => <RoomScreen />}
-                      </Stack.Screen>
+                        }}
+                        component={RoomScreen}
+                      />
 
                       <Stack.Screen
                         name="Profile"
@@ -159,6 +157,17 @@ export default function App() {
                         }}
                       >
                         {() => <AroundmeScreen />}
+                      </Stack.Screen>
+
+                      <Stack.Screen
+                        name="Room"
+                        options={{
+                          title: "My room",
+                          headerStyle: { backgroundColor: "lightgreen" },
+                          headerTitleStyle: { color: "white" },
+                        }}
+                      >
+                        {() => <RoomScreen />}
                       </Stack.Screen>
                     </Stack.Navigator>
                   )}

@@ -1,12 +1,13 @@
 import styles from "../styles";
-import { SwiperFlatList } from "react-native-swiper-flatlist";
 import { useRoute } from "@react-navigation/core";
 import { Entypo } from "@expo/vector-icons";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { View, Text, Image, ActivityIndicator } from "react-native";
+import { View, Text, Image, ActivityIndicator, ScrollView } from "react-native";
+import Swiper from "react-native-swiper";
 
-export default function RoomScreen() {
+export default function RoomScreen(route) {
+  // console.log(route);
   const { params } = useRoute();
 
   const [details, setDetails] = useState();
@@ -49,12 +50,26 @@ export default function RoomScreen() {
       </View>
 
       <View style={styles.offerRoom}>
-        <View>
-          <Image
-            style={styles.homeImage}
-            source={{ uri: details.photos[0].url }}
-          />
-        </View>
+        <ScrollView>
+          <Swiper
+            style={styles.wrapper}
+            dotColor="salmon"
+            activeDotColor="red"
+            autoplay
+          >
+            {details.photos.map((slide) => {
+              return (
+                <View style={styles.slide} key={slide.picture_id}>
+                  <Image
+                    // style={styles.homeImage}
+                    source={{ uri: slide.url }}
+                    style={{ height: "100%", width: "100%" }}
+                  />
+                </View>
+              );
+            })}
+          </Swiper>
+        </ScrollView>
         <Text style={styles.roomPrice}>{details.price} €</Text>
         <View style={styles.titleAvatar}>
           <View>
