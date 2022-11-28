@@ -2,7 +2,7 @@ import axios from "axios";
 import * as ImagePicker from "expo-image-picker";
 import styles from "../styles";
 import { useEffect, useState } from "react";
-import { MaterialIcons } from "@expo/vector-icons";
+import { MaterialIcons, FontAwesome5 } from "@expo/vector-icons";
 import {
   Text,
   View,
@@ -20,73 +20,9 @@ export default function ProfileScreen({ userToken, setToken, userId, setId }) {
   const [email, setEmail] = useState("");
   const [userName, setUserName] = useState("");
   const [description, setDescription] = useState("");
-
-  //Demander le droit d'accéder à la galerie
-  const permissionGetPicture = async () => {
-    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (status === "granted") {
-      //ouvrir la galerie photo
-      const result = await ImagePicker.launchImageLibraryAsync({
-        allowsEditing: true,
-        aspect: [1, 1],
-      });
-      console.log(result);
-      if (result.cancelled === true) {
-        alert("Pas de photo sélectionnée");
-      } else {
-        setPicture(result.uri);
-      }
-    } else {
-      alert("Permission refusée");
-    }
-  };
-
-  const permissionAndTakePicture = async () => {
-    //Demander le droit d'accéder à l'appareil photo
-    const { status } = await ImagePicker.requestCameraPermissionsAsync();
-    if (status === "granted") {
-      //ouvrir l'appareil photo
-      const result = await ImagePicker.launchCameraAsync();
-      // console.log(result);
-      setSelectedPicture(result.uri);
-    } else {
-      alert("Permission refusée");
-    }
-  };
-
-  const sendPicture = async () => {
-    setIsLoading(true);
-
-    const tab = picture.split(".");
-    try {
-      const formData = new FormData();
-      formData.append("photo", {
-        uri: picture,
-        name: `my-pic.${tab[1]}`,
-        type: `image/${tab[1]}`,
-      });
-      const response = await axios.post(
-        "https://upload-file-server-with-js.herokuapp.com/upload",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-          //Si vous avez des headers à transmettre c'est par ici !
-          //headers: { Authorization: "Bearer " + userToken },
-          //transformRequest: (formData) => formData,
-        }
-      );
-
-      if (response.data) {
-        setIsLoading(false);
-        alert("Photo Envoyée !");
-        console.log(response.data);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const [isPictureModified, setIsPictureModified] = useState(false);
+  const [isInfosModified, setIsInfosModified] = useState(false);
+  const [displayMessage, setDisplayMessage] = useState(null);
 
   useEffect(() => {
     fetchData();
@@ -111,7 +47,94 @@ export default function ProfileScreen({ userToken, setToken, userId, setId }) {
         setPicture(response.data.photo.url);
       }
     } catch (error) {
-      console.log("catch =>", error.response);
+      console.log(error);
+      setDisplayMessage({
+        message: "An error occurred",
+        color: "error",
+      });
+    }
+  };
+
+  //Demander le droit d'accéder à la galerie
+  const permissionGetPicture = async () => {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (status === "granted") {
+      //ouvrir la galerie photo
+      const result = await ImagePicker.launchImageLibraryAsync({
+        allowsEditing: true,
+        aspect: [1, 1],
+      });
+      if (result.cancelled === true) {
+        alert("Pas de photo sélectionnée");
+      } else {
+        setPicture(result.uri);
+      }
+    } else {
+      alert("Permission refusée");
+    }
+  };
+
+  //Demander le droit d'accéder à l'appareil photo
+  const permissionAndTakePicture = async () => {
+    const { status } = await ImagePicker.requestCameraPermissionsAsync();
+    if (status === "granted") {
+      //ouvrir l'appareil photo
+      const result = await ImagePicker.launchCameraAsync();
+      // console.log(result);
+      setPicture(result.uri);
+    } else {
+      alert("Permission refusée");
+    }
+  };
+
+  // requête pour mettre à jour les informations suivantes : email, username et description
+  const editInformations = async () => {
+    const obj = {};
+    obj.email = email;
+    obj.username = userName;
+    obj.description = description;
+    try {
+      const response = await axios.put(
+        `https://express-airbnb-api.herokuapp.com/user/update`,
+        obj,
+        {
+          headers: {
+            Authorization: "Bearer " + userToken,
+          },
+        }
+      );
+      // console.log(response.data.description);
+      setDescription(response.data.description);
+    } catch (error) {
+      console.log(error.repsonse);
+    }
+
+    // requête pour mettre à jour la photo de profil
+    try {
+      const uri = picture;
+      const uriParts = uri.split(".");
+      const fileType = uriParts[1];
+
+      const formData = new FormData();
+      formData.append("photo", {
+        uri,
+        name: `userPicture`,
+        type: `image/${fileType}`,
+      });
+
+      const response = await axios.put(
+        `https://express-airbnb-api.herokuapp.com/user/upload_picture`,
+        formData,
+        {
+          headers: {
+            Authorization: "Bearer " + userToken,
+          },
+        }
+      );
+      // console.log(response.data);
+      setPicture(response.data.photo.url);
+    } catch (error) {
+      console.log(error.repsonse);
     }
   };
 
@@ -128,8 +151,21 @@ export default function ProfileScreen({ userToken, setToken, userId, setId }) {
       {/* image profile */}
       <ScrollView>
         <View style={styles.allPict}>
-          {picture && (
-            <Image source={{ uri: picture }} style={styles.profilePicture} />
+          {picture ? (
+            <Image
+              source={{ uri: picture }}
+              style={styles.profilePicture}
+              resizeMode="cover"
+            />
+          ) : (
+            <View style={styles.FontAwesomePicture}>
+              <FontAwesome5
+                name="user-alt"
+                size={100}
+                color="#b5b5b5"
+                resizeMode="cover"
+              />
+            </View>
           )}
 
           <View style={styles.pictos}>
@@ -163,7 +199,10 @@ export default function ProfileScreen({ userToken, setToken, userId, setId }) {
           autoCapitalize="none"
         />
         <View style={styles.allPict}>
-          <TouchableOpacity style={styles.updateProfile}>
+          <TouchableOpacity
+            style={styles.updateProfile}
+            onPress={editInformations}
+          >
             <View style={styles.borderUpdate}>
               <Text style={styles.textBtn}>Update</Text>
             </View>

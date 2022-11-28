@@ -17,8 +17,8 @@ import {
 export default function SignInScreen({ setToken, setId }) {
   const navigation = useNavigation();
 
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
+  const [email, setEmail] = useState("rico@mail.com");
+  const [password, setPassword] = useState("aze");
   const [errorMessage, setErrorMessage] = useState();
 
   return (

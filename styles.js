@@ -131,14 +131,14 @@ export default {
   avatar: {
     width: 70,
     height: 70,
-    borderRadius: "50%",
+    borderRadius: 50,
   },
 
   titleAvatar: {
     marginTop: 10,
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "end",
+    alignItems: "flex-end",
   },
 
   homeStars: {
@@ -200,7 +200,20 @@ export default {
     borderColor: "red",
     width: 150,
     height: 150,
-    borderRadius: "100%",
+    borderRadius: 100,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  FontAwesomePicture: {
+    marginTop: 20,
+    borderWidth: 0.7,
+    borderColor: "red",
+    width: 150,
+    height: 150,
+    borderRadius: 100,
+    justifyContent: "center",
+    alignItems: "center",
   },
 
   allPict: {

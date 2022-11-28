@@ -49,7 +49,7 @@ export default function App() {
         // console.log("coucou =>", response.data);
         setData(response.data);
       } catch (error) {
-        console.log(error.message);
+        error.message;
       }
     };
 
