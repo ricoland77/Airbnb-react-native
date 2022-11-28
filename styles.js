@@ -192,4 +192,76 @@ export default {
   slide: {
     height: 200,
   },
+
+  // page Profile
+  profilePicture: {
+    marginTop: 20,
+    borderWidth: 0.7,
+    borderColor: "red",
+    width: 150,
+    height: 150,
+    borderRadius: "100%",
+  },
+
+  allPict: {
+    alignItems: "center",
+  },
+
+  pictos: {
+    // borderColor: "green",
+    // borderWidth: 0.7,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: 90,
+    marginTop: 10,
+  },
+
+  inputProfileDescription: {
+    borderColor: "red",
+    borderWidth: 1,
+    padding: 5,
+    paddingVertical: 10,
+    marginHorizontal: 30,
+    marginVertical: 30,
+    height: 100,
+  },
+
+  borderUpdate: {
+    // borderColor: "green",
+    // borderWidth: 1,
+    alignItems: "center",
+  },
+
+  updateProfile: {
+    borderColor: "red",
+    borderWidth: 2,
+    alignItems: "center",
+    width: 155,
+    padding: 11,
+    borderRadius: 30,
+    marginVertical: 10,
+  },
+
+  LogOutProfile: {
+    backgroundColor: "#d6d6d6",
+    borderColor: "red",
+    borderWidth: 2,
+    alignItems: "center",
+    width: 155,
+    padding: 11,
+    borderRadius: 30,
+    marginVertical: 10,
+  },
+
+  textBtn: {
+    fontSize: 15,
+    color: "#717171",
+  },
+
+  // page Setting
+  btnSetting: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
 };

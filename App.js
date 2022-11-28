@@ -1,18 +1,25 @@
 import React, { useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { NavigationContainer } from "@react-navigation/native";
+
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Ionicons } from "@expo/vector-icons";
+
+import { TouchableOpacity } from "react-native";
+
+// Icons
+import { Ionicons, AntDesign } from "@expo/vector-icons";
+
+// Containers
+import AroundmeScreen from "./containers/AroundmeScreen";
 import HomeScreen from "./containers/HomeScreen";
 import ProfileScreen from "./containers/ProfileScreen";
+import RoomScreen from "./containers/RoomScreen";
 import SignInScreen from "./containers/SignInScreen";
 import SignUpScreen from "./containers/SignUpScreen";
 import SettingsScreen from "./containers/SettingsScreen";
 import SplashScreen from "./containers/SplashScreen";
-import RoomScreen from "./containers/RoomScreen";
-import AroundmeScreen from "./containers/AroundmeScreen";
-import { TouchableOpacity } from "react-native";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -20,30 +27,38 @@ const Stack = createNativeStackNavigator();
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [userToken, setUserToken] = useState(null);
+  const [userId, setUserId] = useState(null);
 
+  // save or remove token in AsyncStorage & state
   const setToken = async (token) => {
     if (token) {
       await AsyncStorage.setItem("userToken", token);
+      setUserToken(token);
     } else {
       await AsyncStorage.removeItem("userToken");
+      setUserToken(null);
     }
+  };
 
-    setUserToken(token);
+  // save or remove id in AsyncStorage & state
+  const setId = async (id) => {
+    if (id) {
+      AsyncStorage.setItem("userId", id);
+      setUserId(id);
+    } else {
+      AsyncStorage.removeItem("userId");
+      setUserId(null);
+    }
   };
 
   useEffect(() => {
-    // Fetch the token from storage then navigate to our appropriate place
     const bootstrapAsync = async () => {
-      // We should also handle error for production apps
       const userToken = await AsyncStorage.getItem("userToken");
-
-      // This will switch to the App screen or Auth screen and this loading
-      // screen will be unmounted and thrown away.
+      const userId = await AsyncStorage.getItem("userId");
       setUserToken(userToken);
-
+      setUserId(userId);
       setIsLoading(false);
     };
-
     bootstrapAsync();
   }, []);
 
@@ -87,6 +102,7 @@ export default function App() {
                 >
                   {() => (
                     <Stack.Navigator>
+                      {/* Home */}
                       <Stack.Screen
                         name="Home"
                         options={{
@@ -98,9 +114,10 @@ export default function App() {
                         {() => <HomeScreen />}
                       </Stack.Screen>
 
+                      {/* Room */}
                       <Stack.Screen
                         name="Room"
-                        options={{
+                        options={({ navigation }) => ({
                           title: "My room",
                           headerStyle: { backgroundColor: "lightskyblue" },
                           headerTitleStyle: { color: "white" },
@@ -117,18 +134,9 @@ export default function App() {
                               />
                             </TouchableOpacity>
                           ),
-                        }}
+                        })}
                         component={RoomScreen}
                       />
-
-                      <Stack.Screen
-                        name="Profile"
-                        options={{
-                          title: "User Profile",
-                        }}
-                      >
-                        {() => <ProfileScreen />}
-                      </Stack.Screen>
                     </Stack.Navigator>
                   )}
                 </Tab.Screen>
@@ -161,13 +169,58 @@ export default function App() {
 
                       <Stack.Screen
                         name="Room"
-                        options={{
+                        options={({ navigation }) => ({
                           title: "My room",
-                          headerStyle: { backgroundColor: "lightgreen" },
+                          headerStyle: { backgroundColor: "lightskyblue" },
+                          headerTitleStyle: { color: "white" },
+                          headerLeft: () => (
+                            <TouchableOpacity
+                              onPress={() => {
+                                navigation.goBack();
+                              }}
+                            >
+                              <Ionicons
+                                name="arrow-back-circle-outline"
+                                size={30}
+                                color="white"
+                              />
+                            </TouchableOpacity>
+                          ),
+                        })}
+                        component={RoomScreen}
+                      />
+                    </Stack.Navigator>
+                  )}
+                </Tab.Screen>
+
+                <Tab.Screen
+                  name="ProfileTab"
+                  options={{
+                    tabBarLabel: "My profile",
+                    tabBarIcon: ({ color, size }) => (
+                      <AntDesign name="user" size={size} color={color} />
+                    ),
+                  }}
+                >
+                  {() => (
+                    <Stack.Navigator>
+                      <Stack.Screen
+                        name="Profile"
+                        options={{
+                          title: "Profile",
+                          headerStyle: { backgroundColor: "lightpink" },
                           headerTitleStyle: { color: "white" },
                         }}
                       >
-                        {() => <RoomScreen />}
+                        {(props) => (
+                          <ProfileScreen
+                            {...props}
+                            userToken={userToken}
+                            setToken={setToken}
+                            userId={userId}
+                            setId={setId}
+                          />
+                        )}
                       </Stack.Screen>
                     </Stack.Navigator>
                   )}
@@ -192,6 +245,8 @@ export default function App() {
                         name="Settings"
                         options={{
                           title: "Settings",
+                          headerStyle: { backgroundColor: "red" },
+                          headerTitleStyle: { color: "white" },
                         }}
                       >
                         {() => <SettingsScreen setToken={setToken} />}

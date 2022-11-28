@@ -76,7 +76,7 @@ export default function App() {
           return (
             <Marker
               onCalloutPress={() =>
-                navigation.navigate("Room", { userId: marker._id })
+                navigation.navigate("Room", { id: marker._id })
               }
               key={marker.location[0]}
               coordinate={{

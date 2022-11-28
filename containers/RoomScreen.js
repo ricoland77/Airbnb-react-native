@@ -3,12 +3,12 @@ import { useRoute } from "@react-navigation/core";
 import { Entypo } from "@expo/vector-icons";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { View, Text, Image, ActivityIndicator, ScrollView } from "react-native";
 import Swiper from "react-native-swiper";
+import { View, Text, Image, ActivityIndicator, ScrollView } from "react-native";
 
-export default function RoomScreen(route) {
-  // console.log(route);
+export default function RoomScreen() {
   const { params } = useRoute();
+  // console.log(params);
 
   const [details, setDetails] = useState();
   const [isLoading, setIsLoading] = useState(true);
@@ -16,7 +16,7 @@ export default function RoomScreen(route) {
   useEffect(() => {
     const fetchDetails = async () => {
       const response = await axios.get(
-        `https://express-airbnb-api.herokuapp.com/rooms/${params.userId}`
+        `https://express-airbnb-api.herokuapp.com/rooms/${params.id}`
       );
       setDetails(response.data);
       setIsLoading(false);
@@ -29,9 +29,11 @@ export default function RoomScreen(route) {
     const startArray = [];
     for (let i = 0; i < 5; i++) {
       if (i < ratingValue) {
-        startArray.push(<Entypo name="star" size={20} color="#FFB000" />);
+        startArray.push(
+          <Entypo name="star" size={20} color="#FFB000" key={i} />
+        );
       } else {
-        startArray.push(<Entypo name="star" size={20} color="gray" />);
+        startArray.push(<Entypo name="star" size={20} color="gray" key={i} />);
       }
     }
     return startArray;
@@ -97,5 +99,3 @@ export default function RoomScreen(route) {
     </View>
   );
 }
-
-/* <Text>user id : {params.userId}</Text> */

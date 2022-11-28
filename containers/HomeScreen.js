@@ -38,9 +38,11 @@ export default function HomeScreen() {
     const startArray = [];
     for (let i = 0; i < 5; i++) {
       if (i < ratingValue) {
-        startArray.push(<Entypo name="star" size={20} color="#FFB000" />);
+        startArray.push(
+          <Entypo name="star" size={20} color="#FFB000" key={i} />
+        );
       } else {
-        startArray.push(<Entypo name="star" size={20} color="gray" />);
+        startArray.push(<Entypo name="star" size={20} color="gray" key={i} />);
       }
     }
     return startArray;
@@ -66,7 +68,7 @@ export default function HomeScreen() {
           return (
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate("Room", { userId: item._id });
+                navigation.navigate("Room", { id: item._id });
               }}
             >
               <View style={styles.offerHome}>
@@ -99,13 +101,6 @@ export default function HomeScreen() {
           );
         }}
       />
-      <TouchableOpacity
-        onPress={() => {
-          navigation.navigate("Profile", { userId: 123 });
-        }}
-      >
-        <Text>Go to Profile</Text>
-      </TouchableOpacity>
     </View>
   );
 }
