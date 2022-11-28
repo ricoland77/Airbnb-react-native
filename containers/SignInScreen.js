@@ -14,7 +14,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 
-export default function SignInScreen({ setToken }) {
+export default function SignInScreen({ setToken, setId }) {
   const navigation = useNavigation();
 
   const [email, setEmail] = useState();
@@ -68,10 +68,13 @@ export default function SignInScreen({ setToken }) {
                       password,
                     }
                   );
-                  // console.log(response.data.token);
 
+                  // console.log("response.data =>", response.data);
+                  // console.log("response.data.id =>", response.data.id);
                   const userToken = response.data.token;
                   setToken(userToken);
+                  const userId = response.data.id;
+                  setId(userId);
                   alert("Vous êtes connecté");
                 } catch (error) {
                   console.log(error.message);
